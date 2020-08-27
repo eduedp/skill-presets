@@ -10,12 +10,10 @@ module.exports = function SkillPresets(mod) {
 
     mod.hook('S_RP_SKILL_POLISHING_LIST', 1, (e) => {
         activeAdvSkills = e.optionEffects
-        console.log(activeAdvSkills)
     })
 
     mod.hook('S_CREST_INFO', 2, (e) => {
         activeGlyphs = e.crests
-        console.log(activeGlyphs)
     })
 
     function savePreset(name) {
@@ -96,7 +94,6 @@ module.exports = function SkillPresets(mod) {
                 break
             case 'list':
                 command.message(`Preset list: ${settings.presets.map((e) => e.name).join(', ')}`)
-                console.log(settings.presets)
                 break
             case 'apply':
             case 'set':
