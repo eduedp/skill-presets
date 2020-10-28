@@ -13,7 +13,20 @@ module.exports = function SkillPresets(mod) {
     })
 
     mod.hook('S_CREST_INFO', 2, (e) => {
-        activeGlyphs = e.crests
+        activeGlyphs = e.crests.filter((x) => x.enable).map((x) => x.id)
+    })
+
+    mod.hook('C_CREST_APPLY_LIST', 2, (e) => {
+        activeGlyphs = e.glyphs
+    })
+
+    mod.hook('S_CREST_APPLY', 2, (e) => {
+        if (e.enable) {
+            activeGlyphs.push(e.id)
+        } else {
+            const glyph = activeGlyphs.findIndex((x) => e.id == x)
+            activeGlyphs.splice(glyph, 1)
+        }
     })
 
     function savePreset(name) {
@@ -26,7 +39,7 @@ module.exports = function SkillPresets(mod) {
             return
         }
 
-        const glyphs = activeGlyphs.filter((e) => e.enable).map((e) => e.id)
+        const glyphs = activeGlyphs
         const advSkills = activeAdvSkills.filter((e) => e.active).map((e) => ({ group:e.group, id: e.id }) )
         const preset = settings.presets.find((e) => e.name == name)
         if (preset) {
